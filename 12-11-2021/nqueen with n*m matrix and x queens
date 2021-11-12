@@ -1,0 +1,34 @@
+
+class Main {
+    public static void main(String[] args) {
+        int n=4,m=5,q=3;
+        boolean[] cols=new boolean[m];
+        boolean[] diag=new boolean[n+m-1];
+        boolean[] adiag=new boolean[n+m-1];
+        System.out.println(nqueensafe(n,m,0,q,cols,diag,adiag));
+    }
+    
+    public static int nqueensafe(int n, int m , int floor, int nq, boolean[] cols, boolean[] diag, boolean[] adiag)
+    {
+        if (nq==0 || floor==n)
+        {
+            if(nq==0)return 1;
+            return 0;
+        }
+
+        int count = 0;
+        for (int rooms = 0; rooms < m; rooms++)
+        {
+            //we take the 2d array in the form of multiple 1d arrays, and to find the row number and column number, we apply this formula.
+            int r=floor, c=rooms;
+            if(!cols[c] && !diag[r+c] && !adiag[r-c+m-1])
+            {
+                cols[c]=diag[r+c]=adiag[r-c+m-1]=true;
+                count+=nqueensafe(n,m,floor+1,nq-1,cols,diag,adiag);
+                cols[c]=diag[r+c]=adiag[r-c+m-1]=false;
+            }
+        }
+        count+=nqueensafe(n,m,floor+1,nq,cols,diag,adiag);
+        return count;
+    }
+}
